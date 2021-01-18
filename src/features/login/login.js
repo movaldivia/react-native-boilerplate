@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
-import { rutParser } from '../../helpers/rut';
-import { useDispatch } from 'react-redux';
-import { fetchUserThunk, fetchInfoThunk } from './loginSlice';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  Image
+} from 'react-native';
+import {rutParser} from '../../helpers/rut';
+import {useDispatch} from 'react-redux';
+import {fetchUserThunk, fetchInfoThunk} from './loginSlice';
 
 const Login = () => {
-  const [rut, setRut] = useState('')
-  const [password, setPassword] = useState('')
+  const [rut, setRut] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const handleSubmit = async () => {
     const parsed_rut = rut.split('-')[0].replace(/\./gi, '');
-    dispatch(fetchUserThunk({ rut: parsed_rut, password })).then( res => {
+    dispatch(fetchUserThunk({rut: parsed_rut, password})).then((res) => {
       dispatch(
         fetchInfoThunk({
           id: res.payload.id,
@@ -18,20 +25,20 @@ const Login = () => {
           refresh: res.payload.refresh,
         }),
       );
-    })
-  }
+    });
+  };
 
   const handleChange = (rut) => {
     let parsedRut = rutParser(rut.replace(/[^0-9.]/g, ''));
     setRut(parsedRut);
-  }
+  };
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'salmon',
+      backgroundColor: '#67cfe2',
     },
     titleText:{
       fontFamily: 'Baskerville',
@@ -41,7 +48,7 @@ const Login = () => {
     },
     button: {
       alignItems: 'center',
-      backgroundColor: 'powderblue',
+      backgroundColor: '#0a99b3',
       width: 200,
       height: 44,
       padding: 10,
@@ -50,7 +57,7 @@ const Login = () => {
       borderRadius: 25,
       marginBottom: 10,
     },
-    buttonText:{
+    buttonText: {
       fontFamily: 'Baskerville',
       fontSize: 20,
       alignItems: 'center',
@@ -69,31 +76,27 @@ const Login = () => {
   });
   return (
     <View style={styles.container}>
-    <TextInput
-          value={rut}
-          onChangeText={(rut) => handleChange(rut)}
-          placeholder='rut'
-          placeholderTextColor = 'white'
-          style={styles.input}
-     />
-        <TextInput
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-          placeholder={'password'}
-          secureTextEntry={true}
-          placeholderTextColor = 'white'
-          style={styles.input}
-        />
-        <TouchableOpacity
-          onPress={handleSubmit}
-          style={styles.button}
-       >
-         <Text> Sign Up / Login </Text>
-       </TouchableOpacity>
-  </View>
-  )
-
-  
-}
+      <Image source={require('../../assets/img/logo-glik.png')} />
+      <TextInput
+        value={rut}
+        onChangeText={(text) => handleChange(text)}
+        placeholder="rut"
+        placeholderTextColor="white"
+        style={styles.input}
+      />
+      <TextInput
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+        placeholder={'password'}
+        secureTextEntry={true}
+        placeholderTextColor="white"
+        style={styles.input}
+      />
+      <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+        <Text>LOG IN</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 export default Login;
