@@ -9,19 +9,15 @@
  */
 
 import React from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
-
+import HomePage from './src/features/home/index';
+import {Provider} from 'react-redux';
+import store from './src/store/index';
 
 const App = () => {
   return (
-    <>
-      <View>
-        <Text>Hola mundo</Text>
-      </View>
-    </>
+    <Provider store={store}>
+      <HomePage />
+    </Provider>
   );
 };
 
